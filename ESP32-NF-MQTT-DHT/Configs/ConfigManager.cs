@@ -15,21 +15,29 @@ namespace ESP32_NF_MQTT_DHT.Configs
 
         private static void LoadConfig()
         {
-            string filePath = "config.txt";
-
-            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-            using (var reader = new StreamReader(fileStream))
+            try
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                string filePath = "config.txt";
+
+                using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                using (var reader = new StreamReader(fileStream))
                 {
-                    var parts = line.Split('=');
-                    if (parts.Length == 2)
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        _settings[parts[0].Trim()] = parts[1].Trim();
+                        var parts = line.Split('=');
+                        if (parts.Length == 2)
+                        {
+                            _settings[parts[0].Trim()] = parts[1].Trim();
+                        }
                     }
                 }
             }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            
         }
 
         public static string GetSetting(string key)
